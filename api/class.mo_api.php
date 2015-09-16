@@ -19,6 +19,8 @@ class mo_api
 
     private $uri = self::APIURI;
 
+    private $options = false;
+
     public function __construct()
     {
         return $this;
@@ -32,6 +34,17 @@ class mo_api
     public function set_cookie_name($cookie_name)
     {
         $this->cookie_name = $cookie_name;
+        return $this;
+    }
+
+    public function get_options()
+    {
+        return $this->options;
+    }
+
+    public function set_options($options)
+    {
+        $this->options = $options;
         return $this;
     }
 
@@ -106,6 +119,9 @@ class mo_api
         $ch = curl_init();
         
         // // set url
+        if($this->get_options()){
+            $this->set_uri($this->get_uri().'?options='.urlencode(json_encode($this->get_options())));
+        }
         curl_setopt($ch, CURLOPT_URL, $this->get_uri());
         // // add all our post vars
         curl_setopt($ch, CURLOPT_HEADER, 0);
